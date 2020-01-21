@@ -365,14 +365,12 @@ class HilbertSpace(list):
         basis_labels_list = list(itertools.product(*basis_label_ranges))
         return [dressed_indices, basis_labels_list]
 
-    def lookup_dressed_index(self, bare_labels, param_index=0):
+    def lookup_dressed_index(self, bare_labels):
         """
         Parameters
         ----------
         bare_labels: tuple of ints
             bare_labels = (index, index2, ...)
-        param_index: int
-            index of parameter value of interest
 
         Returns
         -------
@@ -380,29 +378,28 @@ class HilbertSpace(list):
             dressed state index closest to the specified bare state
         """
         try:
-            lookup_position = self.state_lookup_table[param_index][1].index(bare_labels)
+            lookup_position = self.state_lookup_table[1].index(bare_labels)
         except ValueError:
             return None
-        return self.state_lookup_table[param_index][0][lookup_position]
+        return self.state_lookup_table[0][lookup_position]
 
-    def lookup_bare_index(self, dressed_index, param_index=0):
+    def lookup_bare_index(self, dressed_index):
         """
         For given dressed index, look up the corresponding bare index from the state_lookup_table.
 
         Parameters
         ----------
         dressed_index: int
-        param_index: int
 
         Returns
         -------
         tuple(int)
         """
         try:
-            lookup_position = self.state_lookup_table[param_index][0].index(dressed_index)
+            lookup_position = self.state_lookup_table[0].index(dressed_index)
         except ValueError:
             return None
-        basis_labels = self.state_lookup_table[param_index][1][lookup_position]
+        basis_labels = self.state_lookup_table[1][lookup_position]
         return basis_labels
 
     def _get_metadata_dict(self):
